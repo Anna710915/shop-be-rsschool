@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Product Service API
+  description: API for managing products
+  version: 1.0.0
+servers:
+  - url: https://rebrbg34v7.execute-api.eu-west-1.amazonaws.com/prod
+    description: Production server
+
+tags:
+  - name: Products
+    description: API for retrieving sweet products
+
+paths:
+  /products:
+    get:
+      tags: 
+        - Products
+      summary: Get all products
+      description: Returns a list of products.
+      operationId: getProductsList
+      responses:
+        "200":
+          description: A list of products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+  /products/{productId}:
+    get:
+      tags:
+        - Products
+      summary: Get product by ID
+      description: Returns a single product by its ID.
+      operationId: getProductById
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product details.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Product not found.
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
