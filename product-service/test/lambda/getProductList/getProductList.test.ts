@@ -5,10 +5,9 @@ describe('getProductListHandler', () => {
   it('should return a 200 status code and a list of products', async () => {
     // Mock event and context
     const event = {} as APIGatewayProxyEvent;
-    const context = {} as Context;
-
+    
     // Call the handler
-    const response: APIGatewayProxyResult = await getProductListHandler(event, context, () => null) as APIGatewayProxyResult;
+    const response: APIGatewayProxyResult = await getProductListHandler(event) as APIGatewayProxyResult;
 
     // Expectations
     expect(response).toBeDefined();
