@@ -13,11 +13,33 @@ tags:
 
 paths:
   /products:
+    post:
+      tags: 
+        - Products
+      summary: Create a product
+      description: Creates a new product in the database.
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductRequest"
+      responses:
+        "201":
+          description: A created product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Invalid request payload.
+
     get:
       tags: 
         - Products
       summary: Get all products
-      description: Returns a list of products.
+      description: Returns a list of products with their stock count.
       operationId: getProductsList
       responses:
         "200":
@@ -59,9 +81,30 @@ components:
       properties:
         id:
           type: string
+          format: uuid
         title:
           type: string
         description:
           type: string
         price:
           type: number
+        count:
+          type: integer
+          description: Number of items available in stock
+
+    CreateProductRequest:
+      type: object
+      required:
+        - title
+        - price
+        - count
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        count:
+          type: integer
+          description: Initial stock count for the product
