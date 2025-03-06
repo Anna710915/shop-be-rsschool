@@ -8,7 +8,6 @@ export class ProductServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-
      // DynamoDB Tables
     const productsTable =  dynamodb.Table.fromTableName(this, 'ProductTable', 'products');
 
