@@ -12,15 +12,19 @@
     "dynamoDB:fill": "npx ts-node src/fillDynamoDB.ts"
   },
   "devDependencies": {
-    "@aws-sdk/client-dynamodb": "^3.751.0",
+    "@aws-sdk/client-dynamodb": "^3.758.0",
+    "@aws-sdk/client-sns": "^3.758.0",
     "@aws-sdk/lib-dynamodb": "^3.751.0",
     "@types/aws-lambda": "^8.10.147",
     "@types/jest": "^29.5.14",
     "@types/node": "22.7.9",
     "@types/uuid": "^10.0.0",
     "aws-cdk": "2.178.1",
+    "aws-sdk-client-mock": "^4.1.0",
+    "dotenv": "^16.4.7",
     "jest": "^29.7.0",
-    "ts-jest": "^29.2.5",
+    "jest-mock": "^29.7.0",
+    "ts-jest": "^29.2.6",
     "ts-node": "^10.9.2",
     "typescript": "~5.6.3"
   },

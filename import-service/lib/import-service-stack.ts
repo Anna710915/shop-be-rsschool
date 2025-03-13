@@ -6,6 +6,8 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3Notifications from 'aws-cdk-lib/aws-s3-notifications';
 import * as path from 'path';
 import { Construct } from 'constructs';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 export class ImportServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -26,6 +28,7 @@ export class ImportServiceStack extends cdk.Stack {
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
         iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'), 
+        iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSQSFullAccess'),
       ],
     });
 
@@ -68,6 +71,9 @@ export class ImportServiceStack extends cdk.Stack {
       handler: 'index.importFileParserHandler',
       code: lambda.Code.fromAsset('dist/lib/lambda/importFileParser'),
       role: lambdaS3Role, 
+      environment: {
+        SQS_QUEUE_URL: process.env.SQS_QUEUE_URL!
+      },
       layers
     });
     
