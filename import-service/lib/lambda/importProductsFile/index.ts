@@ -10,7 +10,7 @@ export const importProductsFileHandler = async (event: any) => {
     return {
       statusCode: 400,
       headers: {
-        "Access-Control-Allow-Origin": "*", // Allow all origins
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*",
         "Access-Control-Allow-Methods": "GET",
       },
@@ -34,7 +34,7 @@ export const importProductsFileHandler = async (event: any) => {
     return {
       statusCode: 200,
       headers: {
-        "Access-Control-Allow-Origin": "*", // Allow all origins
+        "Access-Control-Allow-Origin": "*", 
         "Access-Control-Allow-Headers": "*",
         "Access-Control-Allow-Methods": "GET",
       },
