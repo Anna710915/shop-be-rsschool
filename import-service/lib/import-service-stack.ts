@@ -53,18 +53,42 @@ export class ImportServiceStack extends cdk.Stack {
     importBucket.grantPut(importProductsFileLambda);
     importBucket.grantReadWrite(importProductsFileLambda);
 
-    // API Gateway to expose the Lambda function
-    const api = new apigateway.RestApi(this, 'ImportServiceAPI');
+    const authLambda = lambda.Function.fromFunctionName(this, 'BasicAuthorizerLambda', 'authLambdaFunction');
 
+    // API Gateway to expose the Lambda function
+    const api = new apigateway.RestApi(this, 'ImportServiceAPI', {
+        defaultCorsPreflightOptions: {
+          allowOrigins: apigateway.Cors.ALL_ORIGINS, 
+          allowMethods: apigateway.Cors.ALL_METHODS, 
+          allowHeaders: [
+            'Content-Type',
+            'Authorization',
+            'X-Amz-Date',
+            'X-Api-Key',
+            'X-Amz-Security-Token',
+          ],
+        },
+      }
+    );
+
+    const authorizer = new apigateway.TokenAuthorizer(
+      this, 'BasicAuthorizer', { handler: authLambda, identitySource: 'method.request.header.Authorization'}
+    )
     const importResource = api.root.addResource('import');
-    importResource.addMethod('GET', new apigateway.LambdaIntegration(importProductsFileLambda));
+    importResource.addMethod(
+      'GET', 
+      new cdk.aws_apigateway.LambdaIntegration(importProductsFileLambda), {
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+        authorizer
+      }
+    );
 
     // Enable CORS for the GET method of the import resource
-    importResource.addCorsPreflight({
-      allowOrigins: apigateway.Cors.ALL_ORIGINS,
-      allowMethods: apigateway.Cors.ALL_METHODS, 
-      allowHeaders: apigateway.Cors.DEFAULT_HEADERS, 
-    });
+    // importResource.addCorsPreflight({
+    //   allowOrigins: apigateway.Cors.ALL_ORIGINS,
+    //   allowMethods: apigateway.Cors.ALL_METHODS, 
+    //   allowHeaders: apigateway.Cors.DEFAULT_HEADERS, 
+    // });
 
     const importFileParserLambda = new lambda.Function(this, 'ImportFileParserLambda', {
       runtime: lambda.Runtime.NODEJS_22_X,
