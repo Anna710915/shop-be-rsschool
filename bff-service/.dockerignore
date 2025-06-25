@@ -1,0 +1,33 @@
+# Node.js dependencies - not needed in the Docker image (installed during build)
+node_modules
+
+# Build artifacts - already included or created during image build
+dist
+build
+
+# Test coverage reports - unnecessary for production images
+coverage
+
+# Environment variables - sensitive data should not be copied into the image
+.env
+
+# Source files of TypeScript
+*.ts
+
+# Git repo and metadata
+.git
+.gitignore
+
+# Project documentation - not needed in runtime image
+README.md
+
+# Editor configurations - not required in the image
+.vscode
+
+# AWS CDK output directory
+cdk.out
+
+# Configuration files for Elastic Beanstalk
+.ebextensions
+
+.prettierrc
